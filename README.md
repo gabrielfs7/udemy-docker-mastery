@@ -19,6 +19,8 @@ Feel free to create issues or PRs if you find a problem.
 - Is an instance of the image running as a "process".
 - We can have many containers of "same" image running.
 
+# How to?
+
 ### Running container
 
 ```
@@ -43,3 +45,44 @@ docker container run --publish 80:80 --detach nginx
 ```
 
 It will give you an unique container ID, i.e. `6db7f4379093a7ea67acc83ca28fd9840e30c92546df4e83998462f57a72656b`.
+
+### Listing containers
+
+You can see the running container by typing:
+
+```
+docker container ls
+```
+
+or to see all containers history.
+
+```
+docker container ls -a
+```
+
+### Stopping containers
+
+And to stop the container (where `6db7f4379093` is my container ID):
+
+```
+docker container stop 6db7f4379093
+```
+
+### Running with name
+
+Specifying a container name is good practice.
+
+
+```
+docker container run --publish 80:80 --detach --name webhost nginx
+```
+
+### Restart a previous stoped container: 
+
+By providing the container's "name" or "ID" you can start previously stoped container. 
+
+I.e for `webhost` container's name.
+
+```
+docker container start webhost
+```
