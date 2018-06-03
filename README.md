@@ -27,3 +27,11 @@ docker container run --publish 80:80 nginx
 
 - It will download Nginx image and run it in a container. 
 - Now access "http://localhost".
+
+What happened?
+
+- Docker tried to locate locally an image "nginx".
+- Docked did not find, so Downloaded it from "hub.docker.com".
+- Docker Engine started a new process for a container of "nginx" image.
+- Docker Engine exposed container port "80".
+- Docker Engine redirected the traffic for your localhost port "80" to container port "80".
