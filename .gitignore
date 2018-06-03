@@ -144,3 +144,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# App files
+.idea
+.vs
+*.mdw
+*.sln
