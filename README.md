@@ -32,11 +32,15 @@ docker container run --publish 80:80 nginx
 
 What happened?
 
-- Docker tried to locate locally an image "nginx".
-- Docked did not find, so Downloaded it from "hub.docker.com".
-- Docker Engine started a new process for a container of "nginx" image.
+- Docker tried to locate locally an image "nginx" in the image cache.
+- Docked did not find, so it will download from "hub.docker.com".
+- The latest image will be download, which means "nginx:latest" and it will be stored in the image cache.
+- Docker Engine will give to the container an IP in a private network.
 - Docker Engine exposed container port "80".
 - Docker Engine redirected the traffic for your localhost port "80" to container port "80".
+- Docker Engine started a new process for a container of "nginx" image.
+- This container will execute "CMD" command inside the Docker file of "nginx" image.
+
 
 If we want to run it in a "detached" process, we can run:
 
@@ -85,4 +89,28 @@ I.e for `webhost` container's name.
 
 ```
 docker container start webhost
+```
+
+### See container logs.
+
+Where my container is `webhost`.
+
+```
+docker container logs webhost
+```
+
+### See container process inside container
+
+Where `webhost` is my container.
+
+```
+docker container top webhost
+```
+
+### Removing container
+
+Here I can also remove more than one container by providing theirs IDs as follows.
+
+```
+docker container rm 69aeec00bc47 6db7f4379093 16c2c0cf9a66
 ```
