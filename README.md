@@ -35,3 +35,11 @@ What happened?
 - Docker Engine started a new process for a container of "nginx" image.
 - Docker Engine exposed container port "80".
 - Docker Engine redirected the traffic for your localhost port "80" to container port "80".
+
+If we want to run it in a "detached" process, we can run:
+
+```
+docker container run --publish 80:80 --detach nginx
+```
+
+It will give you an unique container ID, i.e. `6db7f4379093a7ea67acc83ca28fd9840e30c92546df4e83998462f57a72656b`.
