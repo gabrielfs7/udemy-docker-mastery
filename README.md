@@ -114,3 +114,11 @@ Here I can also remove more than one container by providing theirs IDs as follow
 ```
 docker container rm 69aeec00bc47 6db7f4379093 16c2c0cf9a66
 ```
+
+### Starting multiple containers
+
+```
+docker container run --publish 80:80 --detach --name nginx_server nginx
+docker container run --publish 8080:80 --detach --name apache_server httpd
+docker container run --publish 3307:3306 --detach --env MYSQL_ROOT_PASSWORD=root --name mysql_db mysql
+```
