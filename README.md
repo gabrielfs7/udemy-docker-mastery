@@ -107,6 +107,14 @@ Where `webhost` is my container.
 docker container top webhost
 ```
 
+### Inspect a container
+
+TO obtain ipaddress, gateway, port etc.
+
+```
+docker container inspect webhost
+```
+
 ### Removing container
 
 Here I can also remove more than one container by providing theirs IDs as follows.
