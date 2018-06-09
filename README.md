@@ -28,21 +28,21 @@ docker container run --publish 80:80 nginx
 ```
 
 - It will download Nginx image and run it in a container. 
-- Now access "http://localhost".
+- Now access `http://localhost`.
 
 What happened?
 
-- Docker tried to locate locally an image "nginx" in the image cache.
-- Docked did not find, so it will download from "hub.docker.com".
-- The latest image will be download, which means "nginx:latest" and it will be stored in the image cache.
+- Docker tried to locate locally an image `nginx` in the image cache.
+- Docked did not find, so it will download from `hub.docker.com`.
+- The latest image will be download, which means `nginx:latest` and it will be stored in the image cache.
 - Docker Engine will give to the container an IP in a private network.
-- Docker Engine exposed container port "80".
-- Docker Engine redirected the traffic for your localhost port "80" to container port "80".
-- Docker Engine started a new process for a container of "nginx" image.
-- This container will execute "CMD" command inside the Docker file of "nginx" image.
+- Docker Engine exposed container port `80`.
+- Docker Engine redirected the traffic for your localhost port `80` to container port `80`.
+- Docker Engine started a new process for a container of `nginx` image.
+- This container will execute `CMD` command inside the Docker file of `nginx` image.
 
 
-If we want to run it in a "detached" process, we can run:
+If we want to run it in a `detached` process, we can run:
 
 ```
 docker container run --publish 80:80 --detach nginx
@@ -83,7 +83,7 @@ docker container run --publish 80:80 --detach --name webhost nginx
 
 ### Restart a previous stoped container: 
 
-By providing the container's "name" or "ID" you can start previously stoped container. 
+By providing the container's `name` or `ID` you can start previously stoped container. 
 
 I.e for `webhost` container's name.
 
@@ -153,7 +153,7 @@ docker container exec -it nginx_server bash
 To execute commands from outside the container:
 
 ```
-docker container exec -it nginx_server "whoami"
+docker container exec -it nginx_server whoami
 ```
 
 #### For Alpine
@@ -198,4 +198,27 @@ It will download linux `alpine` image to local cache.
 
 ```
 docker pull alpine
+```
+
+
+## Docker Networking
+
+- When we access a docker container we are actaully acccessing a network `bridge`.
+
+...Start a container specifing that internal port `80` will be exposed as `8080`.
+
+```
+docker container run --publish 8080:80 --detach --name nginx_server nginx
+```
+
+...To check the port
+
+```
+docker container port nginx_server
+```
+
+...To check the ip address using `format` option (very helpful option).
+
+```
+docker container inspect --format '{{ .NetworkSettings.IPAddress }}' nginx_server
 ```
