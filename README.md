@@ -156,10 +156,46 @@ To execute commands from outside the container:
 docker container exec -it nginx_server "whoami"
 ```
 
+#### For Alpine
+
+For `alpine` there is no `bash` installed by default, so it is needed to use `sh`
+
+
+```
+docker pull alpine
+docker container run --detach --name alpine alpine tail -f /dev/null
+docker container exec -it alpine sh
+```
+
+Obs: Note that we use `tail -f /dev/null` to keep alpine container `alive` after exit.
+
+... and inside Apline, install the bash
+
+```
+apk update
+apk add bash
+```
+
+docker container exec -it alpine bash
+
+... now you can run bash:
+
+```
+docker container exec -it alpine bash
+```
+
 ### Run a container overriding initial COMMAND
 
 It will override default image initialization command to `bash` and will bring you to inside the container.
 
 ```
 docker container run -it --name nginx_server nginx bash
+```
+
+### Download image to local image cache
+
+It will download linux `alpine` image to local cache.
+
+```
+docker pull alpine
 ```
