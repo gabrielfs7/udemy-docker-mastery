@@ -99,20 +99,26 @@ Where my container is `webhost`.
 docker container logs webhost
 ```
 
-### See container process inside container
+### Monitoring a container 
 
 Where `webhost` is my container.
+
+See container process inside container
 
 ```
 docker container top webhost
 ```
 
-### Inspect a container
-
-TO obtain ipaddress, gateway, port etc.
+To obtain ipaddress, gateway, port etc.
 
 ```
 docker container inspect webhost
+```
+
+See memory usage, processor usage, network, process, etc.
+
+```
+docker container stats webhost
 ```
 
 ### Removing container
@@ -131,4 +137,29 @@ Note the `--env` was used to set mysql root password.
 docker container run --publish 80:80 --detach --name nginx_server nginx
 docker container run --publish 8080:80 --detach --name apache_server httpd
 docker container run --publish 3307:3306 --detach --env MYSQL_ROOT_PASSWORD=root --name mysql_db mysql
+```
+
+
+### Run interactive commands inside container
+
+For this we use `-i` (interactive: Keep STDIN open even if not attached) and `-t` (tty: Allocate a pseudo-TTY / text terminal).
+
+To go inside the container:
+
+```
+docker container exec -it nginx_server bash
+```
+
+To execute commands from outside the container:
+
+```
+docker container exec -it nginx_server "whoami"
+```
+
+### Run a container overriding initial COMMAND
+
+It will override default image initialization command to `bash` and will bring you to inside the container.
+
+```
+docker container run -it --name nginx_server nginx bash
 ```
