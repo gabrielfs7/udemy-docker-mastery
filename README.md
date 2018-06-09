@@ -203,7 +203,11 @@ docker pull alpine
 
 ## Docker Networking
 
-- When we access a docker container we are actaully acccessing a network `bridge`.
+- The docker container are create inside a virtual network called `bridge` or `docker0`.
+- When we "expose a port" we are telling to our system (in my case, my MAC) 
+ open up in the "network interface" (which is a kind of firewall) the port `8080` 
+ and redirect traffic through this private network to port `80` of `docker0`.
+- We can have more then one "docker virtual network" and restrict access among certain containers.
 
 ...Start a container specifing that internal port `80` will be exposed as `8080`.
 
