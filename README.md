@@ -11,13 +11,13 @@ Feel free to create issues or PRs if you find a problem.
 
 ### Image
 
-- Is the application I want to run. I.e. image of "nginx" web server.
-- We can store our images as "registry" on Docker Hub (hub.docker.com)
+- Is the application I want to run. I.e. image of `nginx` web server.
+- We can store our images as `registry` on Docker Hub (hub.docker.com)
 
 ### Container
 
-- Is an instance of the image running as a "process".
-- We can have many containers of "same" image running.
+- Is an instance of the image running as a `process`.
+- We can have many containers of `same` image running.
 
 # How to?
 
