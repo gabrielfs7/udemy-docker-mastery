@@ -241,3 +241,38 @@ docker container inspect --format '{{ .NetworkSettings.IPAddress }}' nginx_serve
 
 Docker container IPs will be generated dynamically inside networks, 
 so we need to set DNS to avoid possible inconsistency.
+
+Docker Daemon has an internal DNS server that containers use by default.
+
+Let's suppose I have two containers `apache_server` and `nginx_server` 
+and I have a network called `my_app_net`. If I add both containers to this network, 
+they will be able to "ping" each other automatically by their "names" instead rellying on IPs.
+
+Example:
+
+First enter in your containers `apache_server` and `nginx_server` and install ping package:
+
+```
+apt-get update
+apt-get install iputils-ping
+```
+
+Exit the containers and create a network:
+
+``` 
+docker network create my_app_net --driver bridge 
+```
+
+Now connect them to the same network:
+
+```
+docker network connect my_app_net apache_server
+docker network connect my_app_net nginx_server
+```
+
+And it will allow you to reach each other by the container name as you can test:
+
+```
+docker container exec -it nginx_server ping apache_server
+docker container exec -it apache_server ping nginx_server
+```
