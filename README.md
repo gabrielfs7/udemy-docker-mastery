@@ -200,6 +200,16 @@ It will download linux `alpine` image to local cache.
 docker pull alpine
 ```
 
+### Clean up file system after exit
+
+If you are running short-term foreground processes, these container file 
+systems can really pile up. If instead you’d like Docker to automatically clean 
+up the container and remove the file system when the container exits, you can 
+add the `--rm` flag:
+
+```
+docker container run --rm --detach --name my_centos centos:7 tail -f /dev/null
+```
 
 ## Docker Networking
 
