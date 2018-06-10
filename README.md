@@ -208,8 +208,14 @@ up the container and remove the file system when the container exits, you can
 add the `--rm` flag:
 
 ```
-docker container run --rm --detach --name my_centos centos:7 tail -f /dev/null
+docker container run --rm -it --name my_centos centos:7 bash
 ```
+
+So when you exit the container it will remove all generated container 
+filesystem. Type ``` docker container ls -a ``` and you will notice that 
+container is not there anymore. 
+
+It also works if you run container with `--detach` and stop the container.
 
 ## Docker Networking
 
@@ -286,3 +292,40 @@ And it will allow you to reach each other by the container name as you can test:
 docker container exec -it nginx_server ping apache_server
 docker container exec -it apache_server ping nginx_server
 ```
+
+
+#### DNS Round Robin
+
+We can 2 or more containers responding to the same DNS. It is a technique used 
+by many companies to balance their farm of servers.
+
+- Since Docker Engine 1.11 it is possible to have containers under a network 
+responding to the same DNS.
+
+For this example lets create 2 containers for `elasticsearch:2` image using 
+the following container options:
+
+- `--network`: Specify the user network created.
+- `--network-alias`: Add network-scoped alias for the container. It will 
+basically give to the container an additional DNS name to respond to.
+
+```
+docker network create dude
+docker container run --detach --network dude --net-alias search --name my_elasticsearch_1 elasticsearch:2
+docker container run --detach --network dude --net-alias search --name my_elasticsearch_2 elasticsearch:2
+```
+
+To see wich container is called using "Round Robin", we can do a test by:
+
+```
+docker container run --rm --network dude alpine nslookup search
+```
+
+And to get specific elasticsearch response, inside your centos container 
+execute multiple times this (you should get different responses from each 
+container):
+
+```
+docker container run --rm --network dude centos curl -s search:9200
+```
+
