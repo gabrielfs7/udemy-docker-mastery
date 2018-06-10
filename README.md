@@ -203,10 +203,10 @@ docker pull alpine
 
 ## Docker Networking
 
-- The docker container are create inside a virtual network called `bridge` or `docker0`.
+- The docker container is created inside a virtual network called `bridge` or `docker0`.
 - When we "expose a port" we are telling to our system (in my case, my MAC) 
  open up in the "network interface" (which is a kind of firewall) the port `8080` 
- and redirect traffic through this private network to port `80` of `docker0`.
+ and NAT (translate the network) traffic through this private network to port `80` of `bridge`.
 - We can have more then one "docker virtual network" and restrict access among certain containers.
 
 ...Start a container specifing that internal port `80` will be exposed as `8080`.
@@ -226,3 +226,18 @@ docker container port nginx_server
 ```
 docker container inspect --format '{{ .NetworkSettings.IPAddress }}' nginx_server
 ```
+
+...Useful network commands
+
+- Show networks: ``` docker network ls ```
+- Inspect a network (i.e. bridge): ``` docker network inspect bridge ```
+- Inspect networks for specific container ``` docker container inspect --format '{{ .NetworkSettings.Networks }}' nginx_server ```
+- Create a network: ``` docker network create my_app_net --driver bridge ``` (you can specify different drivers in order to get more networking features).
+- Attach a network to a container ``` docker network connect my_app_net nginx_server ```
+- Detach a network from a container ``` docker network disconnect my_app_net nginx_server ```
+
+### DNS for containers
+
+
+Docker container IPs will be generated dynamically inside networks, 
+so we need to set DNS to avoid possible inconsistency.
