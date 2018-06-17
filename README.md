@@ -405,3 +405,37 @@ Obs: Probably you will have to login on DockerHub before push the image, so:
 ```
 docker login
 ```
+
+## Dockerfile
+
+Basic docker file setup.
+
+```
+#
+# Specify the image and version you will use as base
+#
+FROM debian:stretch-slim
+
+#
+# Create environment variable for your image.
+#
+ENV HTTP_PROXY 127.0.0.1
+ENV APP_PATH /usr/local/myapp
+
+#
+# For every "RUN" statement docker will create a layer (or a cache with unique SHA).
+#
+RUN apt-get update \
+   && apt-get install curl \ 
+   && apt-get install nginx
+
+#
+# By default docker does not expose any port, so you can do it here.
+#
+EXPOSE 80 443
+
+#
+# Command to execute everytime container is lauched
+#
+CMD ["/etc/init.d/nginx", "restart"]
+```
