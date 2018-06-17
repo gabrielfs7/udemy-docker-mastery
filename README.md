@@ -400,7 +400,7 @@ Push the image:
 docker image push gabrielfs7/nginx:latest
 ```
 
-Obes: Probably you will have to login on DockerHub before push the image, so:
+Obs: Probably you will have to login on DockerHub before push the image, so:
 
 ```
 docker login
