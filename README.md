@@ -489,3 +489,14 @@ Successfully tagged customnginx:latest
 
 **Tip:** Put the things that change least at the begining of your docker file, 
 and the things that change the most at the bottom.
+
+
+### Extending original image
+
+This sample uses the **COPY** command to change defaul nginx html file.
+
+```
+cd dockerfile-sample-2
+gsoares$ docker image build -t nginx-with-html .
+docker container run -p 80:80 --rm nginx-with-html
+```
