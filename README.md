@@ -486,3 +486,6 @@ Removing intermediate container 8c5408106f99
 Successfully built 537999468b44
 Successfully tagged customnginx:latest
 ```
+
+**Tip:** Put the things that change least at the begining of your docker file, 
+and the things that change the most at the bottom.
