@@ -408,7 +408,7 @@ docker login
 
 ## Dockerfile
 
-Basic docker file setup.
+Create a file called **Dockerfile** and put it inside:
 
 ```
 #
@@ -439,3 +439,19 @@ EXPOSE 80 443
 #
 CMD ["/etc/init.d/nginx", "restart"]
 ```
+
+and now build it:
+
+```
+docker image build -t customenginx .
+```
+
+#### Caching Dockerfile
+
+If in the Dockerfile above you change the by by for example **expose a new port 8080**. i.e:
+
+```
+EXPOSE 80 443 8080
+```
+
+T
