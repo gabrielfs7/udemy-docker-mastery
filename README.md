@@ -454,4 +454,35 @@ If in the Dockerfile above you change the by by for example **expose a new port 
 EXPOSE 80 443 8080
 ```
 
-T
+You will note that is using cache for almost everything, but for port exposing. 
+See in the result output **Using cache**. This means that Docker is using the 
+**layer's cache**, so it will be very fast:
+
+```
+docker image build -t customnginx .
+Sending build context to Docker daemon  4.096kB
+Step 1/7 : FROM debian:stretch-slim
+ ---> 26f0bb790e25
+Step 2/7 : ENV NGINX_VERSION 1.13.6-1~stretch
+ ---> Using cache
+ ---> fa17a6384459
+Step 3/7 : ENV NJS_VERSION   1.13.6.0.1.14-1~stretch
+ ---> Using cache
+ ---> b68fc7e35910
+Step 4/7 : RUN apt-get update   && apt-get install --no-install-recommends --no-install-suggests -y gnupg1  &&  NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62;  found='';   for server in       ha.pool.sks-keyservers.net      hkp://keyserver.ubuntu.com:80       hkp://p80.pool.sks-keyservers.net:80        pgp.mit.edu     ; do        echo "Fetching GPG key $NGINX_GPGKEY from $server";         apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break;     done;   test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1;  apt-get remove --purge -y gnupg1 && apt-get -y --purge autoremove && rm -rf /var/lib/apt/lists/*    && echo "deb http://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list     && apt-get update   && apt-get install --no-install-recommends --no-install-suggests -y                         nginx=${NGINX_VERSION}                      nginx-module-xslt=${NGINX_VERSION}                      nginx-module-geoip=${NGINX_VERSION}                         nginx-module-image-filter=${NGINX_VERSION}      nginx-module-njs=${NJS_VERSION}                         gettext-base    && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 546775568a8b
+Step 5/7 : RUN ln -sf /dev/stdout /var/log/nginx/access.log     && ln -sf /dev/stderr /var/log/nginx/error.log
+ ---> Using cache
+ ---> 9e69506ff3a6
+Step 6/7 : EXPOSE 80 443 8080
+ ---> Running in 5dbe738571c1
+Removing intermediate container 5dbe738571c1
+ ---> 47509399aa67
+Step 7/7 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in 8c5408106f99
+Removing intermediate container 8c5408106f99
+ ---> 537999468b44
+Successfully built 537999468b44
+Successfully tagged customnginx:latest
+```
