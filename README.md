@@ -12,7 +12,11 @@ Feel free to create issues or PRs if you find a problem.
 ### Image
 
 - Is the application I want to run. I.e. image of `nginx` web server.
+- It the application binaries and dependency for your app and `metadata` on 
+"how to" run it.
 - We can store our images as `registry` on Docker Hub (hub.docker.com)
+- Official: It is an ordered collection of root fliesystem changes and the 
+corresponding execution parameters to run within a `container` runtime.
 
 ### Container
 
@@ -34,12 +38,15 @@ What happened?
 
 - Docker tried to locate locally an image `nginx` in the image cache.
 - Docked did not find, so it will download from `hub.docker.com`.
-- The latest image will be download, which means `nginx:latest` and it will be stored in the image cache.
+- The latest image will be download, which means `nginx:latest` and it will be 
+stored in the image cache.
 - Docker Engine will give to the container an IP in a private network.
 - Docker Engine exposed container port `80`.
-- Docker Engine redirected the traffic for your localhost port `80` to container port `80`.
+- Docker Engine redirected the traffic for your localhost port `80` to 
+container port `80`.
 - Docker Engine started a new process for a container of `nginx` image.
-- This container will execute `CMD` command inside the Docker file of `nginx` image.
+- This container will execute `CMD` command inside the Docker file of 
+`nginx` image.
 
 
 If we want to run it in a `detached` process, we can run:
