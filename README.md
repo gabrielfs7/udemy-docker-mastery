@@ -500,3 +500,10 @@ cd dockerfile-sample-2
 gsoares$ docker image build -t nginx-with-html .
 docker container run -p 80:80 --rm nginx-with-html
 ```
+
+and you can tag and push it:
+
+```
+docker image tag nginx-with-html gabrielfs7/nginx:1.0.0
+docker image push gabrielfs7/nginx:1.0.0
+```
