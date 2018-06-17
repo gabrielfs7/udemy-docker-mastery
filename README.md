@@ -12,11 +12,13 @@ Feel free to create issues or PRs if you find a problem.
 ### Image
 
 - Is the application I want to run. I.e. image of `nginx` web server.
-- It the application binaries and dependency for your app and `metadata` on 
-"how to" run it.
+- It the application `binaries` and` dependencies` for your app and `metadata` 
+  on "how to" run it.
 - We can store our images as `registry` on Docker Hub (hub.docker.com)
-- Official: It is an ordered collection of root fliesystem changes and the 
-corresponding execution parameters to run within a `container` runtime.
+- Official: It is an **ordered collection of root fliesystem changes** and the 
+  corresponding **execution parameters** to run within a `container` runtime.
+- There ir **NO kernel**, **NO kernel modules**, the host (your OS or a Docker-Machine)
+  provider the kernel.
 
 ### Container
 
@@ -336,3 +338,70 @@ container):
 docker container run --rm --network dude centos curl -s search:9200
 ```
 
+## Images
+
+To see image history commands
+
+```
+docker image history nginx:latest
+```
+ And the output will be like this:
+
+```
+ IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+cd5239a0906a        11 days ago         /bin/sh -c #(nop)  CMD ["nginx" "-g" "daemon…   0B
+<missing>           11 days ago         /bin/sh -c #(nop)  STOPSIGNAL [SIGTERM]         0B
+<missing>           11 days ago         /bin/sh -c #(nop)  EXPOSE 80/tcp                0B
+<missing>           11 days ago         /bin/sh -c ln -sf /dev/stdout /var/log/nginx…   22B
+<missing>           11 days ago         /bin/sh -c set -x  && apt-get update  && apt…   53.7MB
+<missing>           11 days ago         /bin/sh -c #(nop)  ENV NJS_VERSION=1.15.0.0.…   0B
+<missing>           11 days ago         /bin/sh -c #(nop)  ENV NGINX_VERSION=1.15.0-…   0B
+<missing>           6 weeks ago         /bin/sh -c #(nop)  LABEL maintainer=NGINX Do…   0B
+<missing>           7 weeks ago         /bin/sh -c #(nop)  CMD ["bash"]                 0B
+<missing>           7 weeks ago         /bin/sh -c #(nop) ADD file:ec5be7eec56a74975…   55.3MB
+```
+
+All the lines are **layers** poiting to `cd5239a0906a` image. And they were 
+modified in different times. Docker "caches" this layers with a unique SHA.
+
+And to see details about image:
+
+```
+docker image inspect nginx:latest
+```
+
+It will shouw you:
+
+- Exposed ports
+- Env variables 
+- Cmd commands
+- Architecture (i.e: amd64)
+- OS
+- etc...
+
+### Tagging images
+
+Download any image:
+
+Obs: In this example I will use **gabrielfs7/nginx:latest**
+
+```
+docker pull nginx:latest
+```
+Create a tag for the image
+
+```
+docker image tag nginx:latest gabrielfs7/nginx:latest
+```
+
+Push the image:
+
+```
+docker image push gabrielfs7/nginx:latest
+```
+
+Obes: Probably you will have to login on DockerHub before push the image, so:
+
+```
+docker login
+```
