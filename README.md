@@ -507,3 +507,12 @@ and you can tag and push it:
 docker image tag nginx-with-html gabrielfs7/nginx:1.0.0
 docker image push gabrielfs7/nginx:1.0.0
 ```
+
+## Container Lifetime & Persistent Data
+
+- Ideally our application code should not remain inside the container.
+- The same for our database.
+- Every time your code need to change, we should recreate the container.
+- There is no data lost, cause your container layers are in cache.
+
+To solve these problems we have **Volumes** and **Bind Mounts**
