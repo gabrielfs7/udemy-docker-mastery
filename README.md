@@ -516,3 +516,47 @@ docker image push gabrielfs7/nginx:1.0.0
 - There is no data lost, cause your container layers are in cache.
 
 To solve these problems we have **Volumes** and **Bind Mounts**
+
+- **Volumes**: make special location outside of container 
+  UFS (Union FIle System).
+  - Preserves data accross container removal.
+  - We can attach the volume for any container we want. 
+  - The container sees it as a local file path.
+  - Volums need manual deletion.
+- **Bind Mounts**: Mount the host file or directory inside the container.
+
+#### Mapping Volumes
+
+Use the `VOLUME` command inside the Dockerfile. I.e:
+
+```
+VOLUME /var/lib/mysql
+```
+
+Example of mysql image: [https://github.com/docker-library/mysql/blob/fc3e856313423dc2d6a8d74cfd6b678582090fc7/8.0/Dockerfile]
+
+Run the container:
+```
+docker container run --detach --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql
+```
+
+Check the volume:
+```
+docker container inspect mysql
+```
+
+Inspect volume
+
+```
+docker volume ls
+docker volume inspect 02d8286f0f4bbb6110a9bdb8e0d44569a26db0d408b5593ac5d7587a69f88601
+```
+
+**Name your volume**
+
+It make easier to local your volume instead of using this giant SHA hash.
+
+```
+docker container run --detach --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v mysql-volume:/var/lib/mysql mysql
+docker volume inspect mysql-volume
+```
