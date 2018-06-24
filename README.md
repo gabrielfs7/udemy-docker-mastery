@@ -570,5 +570,26 @@ Example:
 
 ```
 docker container rm -f nginx
-docker container run --detach --port 80:80 --name nginx -v $(pwd)/nginx-bind-html:/usr/share/nginx/html nginx
+docker container run --detach --publish 80:80 --name nginx -v $(pwd)/nginx-bind-html:/usr/share/nginx/html nginx
 ```
+
+Now access `https://localhost` to see the mounted directory.
+
+And if you access the container, you will see the bind mount file:
+
+```
+docker container exec -it nginx bash
+ls -lha /usr/share/nginx/html
+```
+
+And inside the container if you **change content of shared file** it will not 
+affect file in the host OS.
+
+Example, inside the container, do this.
+
+```
+echo "<br/><br/>Text added"  >> /usr/share/nginx/html/index.html
+```
+
+If you check the browser `https://localhost`, the content was changed, and the 
+original file in your host OS too.
