@@ -642,5 +642,11 @@ cd bindmount-sample-1
 docker container run --publish 80:4000 --name bindmount-sample-1 -v $(pwd):/site bretfisher/jekyll-serve
 ```
 
-You can edit __bindmount-sample-1/_site/about/index.html__ and see the 
+- You can edit __bindmount-sample-1/_site/about/index.html__ and see the 
 modifications by accessing the browser.
+
+- Also you can follow the logs to see how **changes are processed by jekyll**. See:
+
+```
+docker container logs -f bindmount-sample-1
+```
