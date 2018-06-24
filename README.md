@@ -631,3 +631,16 @@ echo "<br/><br/>Text added"  >> /usr/share/nginx/html/index.html
 
 If you check the browser `https://localhost`, the content was changed, and the 
 original file in your host OS too.
+
+###### "Bind Mounting" real world example
+
+It used **jekyll** template tool, so you can edit the files and see real time 
+changes accessing `localhost`.
+
+```
+cd bindmount-sample-1
+docker container run --publish 80:4000 --name bindmount-sample-1 -v $(pwd):/site bretfisher/jekyll-serve
+```
+
+You can edit __bindmount-sample-1/_site/about/index.html__ and see the 
+modifications by accessing the browser.
