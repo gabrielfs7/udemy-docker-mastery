@@ -560,3 +560,15 @@ It make easier to local your volume instead of using this giant SHA hash.
 docker container run --detach --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v mysql-volume:/var/lib/mysql mysql
 docker volume inspect mysql-volume
 ```
+
+#### Bind Mounting
+
+- Maps a host file or directory to a container file or directory.
+- Hosts files always ovewrite files in container.
+
+Example:
+
+```
+docker container rm -f nginx
+docker container run --detach --port 80:80 --name nginx -v $(pwd)/nginx-bind-html:/usr/share/nginx/html nginx
+```
