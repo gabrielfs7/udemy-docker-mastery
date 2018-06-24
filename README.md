@@ -561,8 +561,46 @@ docker container run --detach --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v
 docker volume inspect mysql-volume
 ```
 
-#### Bind Mounting
 
+###### Migrate Database Container - Real world example.
+
+In this example we are going to migrate a DB version of a container by using 
+volumes and instantiating new container.
+
+
+1. Create the `postgres` container version `9.6.1` using a volume 
+called `psql-data` and follow the logs.
+
+```
+docker container run --detach --publish 5433:5432 --name postgres --env POSTGRES_USER=root --env POSTGRES_USER=root -v psql-data:/var/lib/postgresql/data postgres:9.6.1
+docker container logs -f postgres
+```
+
+2. Stop the current container
+
+```
+docker container stop postgres
+```
+
+2. Start the new container named `postgres2` using the **same volume** but 
+version `9.6.2` and follow the logs.
+
+```
+docker container run --detach --publish 5433:5432 --name postgres2 --env POSTGRES_USER=root --env POSTGRES_USER=root -v psql-data:/var/lib/postgresql/data postgres:9.6.2
+ker container logs -f postgres
+```
+
+3. Check that there is just one volume, but 2 containers.
+
+```
+docker container ls
+docker volume ls
+```
+
+Now you can just make your applications to call new container.
+
+#### Bind Mounting
+o 
 - Maps a host file or directory to a container file or directory.
 - Hosts files always ovewrite files in container.
 
