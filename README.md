@@ -600,7 +600,7 @@ docker volume ls
 Now you can just make your applications to call new container.
 
 #### Bind Mounting
-o 
+
 - Maps a host file or directory to a container file or directory.
 - Hosts files always ovewrite files in container.
 
