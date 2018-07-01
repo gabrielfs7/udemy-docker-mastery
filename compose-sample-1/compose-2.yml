@@ -11,6 +11,7 @@ services:
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: example
       WORDPRESS_DB_PASSWORD: examplePW
+    # Binding mount
     volumes:
       - ./wordpress-data:/var/www/html
 
@@ -24,5 +25,6 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+# Seting volumes
 volumes:
   mysql-data:

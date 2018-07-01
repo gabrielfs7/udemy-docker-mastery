@@ -652,7 +652,7 @@ See:
 docker container logs -f bindmount-sample-1
 ```
 
-## Docker compose
+## Docker-compose
 
 Why?
 
@@ -670,7 +670,8 @@ ideal is to be based on **Dockerfile** only.
 
 ### Commands
 
-Setup volumes, networks and start all containers
+Setup volumes, networks and start all containers. This command will be the most
+used one. 
 ```
 docker-compose up
 ```
@@ -679,3 +680,18 @@ Stop all containers and remove containers, volumes and networks.
 ```
 docker-compose down
 ```
+
+#### Testing
+
+Testing **docker-compose** with nginx doing reverse proxy for apache:
+
+- Access test folder.
+- Setup and start containers.
+- Seee the logs.
+
+```
+cd compose-sample-2
+docker-compose up -d
+docker-compose logs -f
+```
+Test accessing http://localhost
