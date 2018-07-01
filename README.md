@@ -645,7 +645,8 @@ docker container run --publish 80:4000 --name bindmount-sample-1 -v $(pwd):/site
 - You can edit __bindmount-sample-1/_site/about/index.html__ and see the 
 modifications by accessing the browser.
 
-- Also you can follow the logs to see how **changes are processed by jekyll**. See:
+- Also you can follow the logs to see how **changes are processed by jekyll**. 
+See:
 
 ```
 docker container logs -f bindmount-sample-1
@@ -656,5 +657,25 @@ docker container logs -f bindmount-sample-1
 Why?
 
 - Way to **create many containers** at once.
-- Way to **configure relationship between containers**, networks, volumes and bind mounting, etc.
-- Configurable through **YAML files** which contains its all version formats:1, 2, 1.1, etc.
+- Way to **configure relationship between containers**, networks, volumes and 
+  bind mounting, etc.
+- Configurable through **YAML files** which contains its all version 
+  formats:1, 2, 1.1, etc.
+
+### Is it good for production?
+
+**No**. It is good for testing or development environment. For production the 
+ideal is to be based on **Dockerfile** only.
+
+
+### Commands
+
+Setup volumes, networks and start all containers
+```
+docker-compose up
+```
+
+Stop all containers and remove containers, volumes and networks.
+```
+docker-compose down
+```
