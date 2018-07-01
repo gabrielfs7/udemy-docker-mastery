@@ -3,19 +3,35 @@ version: '3'
 services:
   ghost:
     image: ghost
+    #
+    # It replaces "-p" for "docker run" command
+    #
     ports:
       - "80:2368"
+    #
+    # It replaces "-e" for "docker run" command
+    #
     environment:
       - URL=http://localhost
       - NODE_ENV=production
       - MYSQL_HOST=mysql-primary
       - MYSQL_PASSWORD=mypass
       - MYSQL_DATABASE=ghost
+    #
+    # It replaces "-v" for "docker run" command
+    #
     volumes:
       - ./config.js:/var/lib/ghost/config.js
+    #
+    # Docker compose specific command, which tells that "mysql-primary" and
+    # "mysql-secondary" must be started before this container.
+    #
     depends_on:
       - mysql-primary
       - mysql-secondary
+  #
+  # Percona proxy to mysql-primary and mysql-secondary
+  #
   proxysql:
     image: percona/proxysql
     environment: 

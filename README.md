@@ -650,3 +650,11 @@ modifications by accessing the browser.
 ```
 docker container logs -f bindmount-sample-1
 ```
+
+## Docker compose
+
+Why?
+
+- Way to **create many containers** at once.
+- Way to **configure relationship between containers**, networks, volumes and bind mounting, etc.
+- Configurable through **YAML files** which contains its all version formats:1, 2, 1.1, etc.
