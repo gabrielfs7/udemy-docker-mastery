@@ -713,3 +713,22 @@ docker-compose top
 ```
 docker-compose down
 ```
+
+## Install drupal with postgress
+
+docker-compose.yml is located on `compose-assigment-1`.
+
+Do not forget to provide **container's name** as host in drupal (advanced options) instalation.
+
+To test:
+
+```
+cd compose-assigment-1
+docker-compose up
+```
+
+To clean up (removing volumes)
+
+```
+docker-compose down -v
+```

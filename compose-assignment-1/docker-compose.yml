@@ -8,11 +8,12 @@ services:
       # expose 8080 on host and sent to 80 in container
       - '8080:80'
     volumes:
-      - /var/www/html/modules
-      - /var/www/html/profiles
-      - /var/www/html/themes
-    networks:
-      - drupal-network
+      - drupal-modules:/var/www/html/modules
+      - drupal-profiles:/var/www/html/profiles
+      - drupal-sites:/var/www/html/sites
+      - drupal-themes:/var/www/html/themes
+#    networks:
+#      - drupal-network
 
   postgres:
     image: postgres:9.6
@@ -23,5 +24,12 @@ services:
     volumes:
       - psql-data:/var/lib/postgresql/data
     restart: always
-    networks:
-      - drupal-network
+ #   networks:
+ #     - drupal-network
+
+volumes:
+  psql-data:
+  drupal-modules:
+  drupal-profiles:
+  drupal-sites:
+  drupal-themes:
