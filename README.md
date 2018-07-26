@@ -695,3 +695,21 @@ docker-compose up -d
 docker-compose logs -f
 ```
 Test accessing http://localhost
+
+- To see the **running docker-compose containers**:
+
+```
+docker-compose ps
+```
+
+- To see process running inside container
+
+```
+docker-compose top
+```
+
+- To stop and remove all container, networks and volumes created by docker-compose
+
+```
+docker-compose down
+```

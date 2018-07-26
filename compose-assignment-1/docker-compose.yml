@@ -1,0 +1,27 @@
+﻿version: '2'
+
+services:
+  drupal:
+    image: drupal:8.5.5-apache
+    container_name: my-drupal
+    ports:
+      # expose 8080 on host and sent to 80 in container
+      - '8080:80'
+    volumes:
+      - /var/www/html/modules
+      - /var/www/html/profiles
+      - /var/www/html/themes
+    networks:
+      - drupal-network
+
+  postgres:
+    image: postgres:9.6
+    container_name: my-postgres
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+    volumes:
+      - psql-data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - drupal-network
