@@ -6,7 +6,7 @@ services:
     container_name: my-drupal
     ports:
       # expose 8080 on host and sent to 80 in container
-      - "8080:80"
+      - 8080:80
     volumes:
       - drupal-modules:/var/www/html/modules
       - drupal-profiles:/var/www/html/profiles
@@ -15,10 +15,12 @@ services:
 
   postgres:
     image: postgres:9.6
+    # IMPORTANT: Replace 'localhost' for 'my-postgres' which will be the 
+    # 'Host' for postgress in the Drupal installation
     container_name: my-postgres
     environment:
-      POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: pgpass
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - psql-data:/var/lib/postgresql/data
     restart: always

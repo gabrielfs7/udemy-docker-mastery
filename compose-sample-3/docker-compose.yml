@@ -6,11 +6,20 @@ version: '2'
 services:
   proxy:
     build:
+      # Informing to use the current directory (The '.') to read Dockerfile
       context: .
+
+      # Will use './nginx.Dockerfile' do build the image
       dockerfile: nginx.Dockerfile
+
+    # setup a custom name for the image created.
+    # Note that this is a local image created based on the 'nginx.Dockerfile'
+    image: nginx-custom
     ports:
       - '80:80'
   web:
     image: httpd
+    # Current ./html directory will be linked to htdocs directory
+
     volumes:
       - ./html:/usr/local/apache2/htdocs/

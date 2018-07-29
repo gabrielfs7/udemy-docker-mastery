@@ -12,7 +12,7 @@ Feel free to create issues or PRs if you find a problem.
 ### Image
 
 - Is the application I want to run. I.e. image of `nginx` web server.
-- It the application `binaries` and` dependencies` for your app and `metadata` 
+- Is the application `binaries` and` dependencies` for your app and `metadata` 
   on "how to" run it.
 - We can store our images as `registry` on Docker Hub (hub.docker.com)
 - Official: It is an **ordered collection of root fliesystem changes** and the 
@@ -727,8 +727,8 @@ cd compose-assigment-1
 docker-compose up
 ```
 
-To clean up (removing volumes)
+To clean up (removing volumes and images)
 
 ```
-docker-compose down -v
+docker-compose down -v --rmi all
 ```
