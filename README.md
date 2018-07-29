@@ -714,7 +714,7 @@ docker-compose top
 docker-compose down
 ```
 
-## Install drupal with postgress
+## Install "Drupal" with postgress
 
 docker-compose.yml is located on `compose-assigment-1`.
 
@@ -732,3 +732,12 @@ To clean up (removing volumes and images)
 ```
 docker-compose down -v --rmi all
 ```
+
+## Install "Drupal" with postgress + Download Template + Preserve Volume
+
+```
+cd cmpose-assigment-2
+docker-compose up
+```
+Then you can configure your themes, change data, etc. 
+After `docker-compose down` you can `docker-compose up` again and you will see all modifications remain.
