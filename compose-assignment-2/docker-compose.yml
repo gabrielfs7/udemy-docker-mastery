@@ -1,1 +1,38 @@
 # create your drupal and postgres config here, based off the last assignment
+version: '2'
+
+services:
+  drupal:
+    build: 
+      # Setting Dockerfile to build the image as we are overring 'drupal:8.2' image
+      context: .
+      dockerfile: Dockerfile
+      # Rename this image
+    image: custom-drupal
+    ports: 
+      - "8080:80"
+
+    # Keep this Drupal volumes
+    volumes:
+      - drupal-modules:/var/www/html/modules
+      - drupal-profiles:/var/www/html/profiles
+      - drupal-sites:/var/www/html/sites
+      - drupal-themes:/var/www/html/themes
+
+  # Setup volume and user/pass for postgress used in Drupal instalation
+  drupal-postgres:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    # Set volume here, so after "docker-compose down" it will not be lost
+    volumes:
+      - drupal-data:/var/lib/postgresql/data
+
+volumes:
+  drupal-data:
+  drupal-modules:
+  drupal-profiles:
+  drupal-sites:
+  drupal-themes:
