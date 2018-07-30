@@ -744,7 +744,7 @@ After `docker-compose down` you can `docker-compose up` again and you will see a
 
 # Docker Swarm
 
-See some questions Swarm can answer for us:
+Swarm is a **Built-in Container Orchestration**. See some questions Swarm can answer for us:
 
 - How we **easily deploy and maitain** our dozens, hundreds or even thousands of containers?
 - How can we **scale out/in/up/down** our application containers?
@@ -755,3 +755,14 @@ See some questions Swarm can answer for us:
 - How to create cross-node virtual networks?
 - How can we ensure **only trusted servers** run our containers?
 - How can we **store secrets, keys, passwords** and get them to the right container?
+
+
+### Swarm Managers
+
+- Manager is a **Worker with permission to controle the Swarm**.
+- They send orders to the **Workers**.
+- They contain an internal Database to store configuration called **RAFT**.
+- They store in this database the **Certificate of Authority**
+
+### Swarm Workers
+
