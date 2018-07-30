@@ -838,3 +838,10 @@ docker container rm -f <CONTAINER_REPLICA_ID>
 docker service ls
 docker service ps jpeitdtnedha
 ```
+
+And finaly to kill the service:
+
+```
+docker service rm epic_rosalind
+```
+__Note__: It will kill all containers for this service replicas.
