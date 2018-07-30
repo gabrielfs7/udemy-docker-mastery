@@ -741,3 +741,17 @@ docker-compose up
 ```
 Then you can configure your themes, change data, etc. 
 After `docker-compose down` you can `docker-compose up` again and you will see all modifications remain.
+
+# Docker Swarm
+
+See some questions Swarm can answer for us:
+
+- How we **easily deploy and maitain** our dozens, hundreds or even thousands of containers?
+- How can we **scale out/in/up/down** our application containers?
+- How can we **start, restart, create and delete** many containers?
+- How can we ensure our **containers restart if they fail**?
+- How can we **replace containers without downtime** (blue/green deploy)?
+  - This means your application is **Always Available**.
+- How to create cross-node virtual networks?
+- How can we ensure **only trusted servers** run our containers?
+- How can we **store secrets, keys, passwords** and get them to the right container?
