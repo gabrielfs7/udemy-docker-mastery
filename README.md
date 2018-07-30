@@ -786,11 +786,55 @@ docker swarm init
 
 It just did:
 
-- PKI and security automation.
+- **PKI and security automation**.
  - Root Signing Certificate created for our Swarm.
  - Certificate is issued for first Manager node.
  - Join tokens are created.
-- RAFT database created to store root CA, configs and secrets.
+- **RAFT database created to store root CA, configs and secrets**.
  - Encrypted by default on disk (1.13+)
  - No need for another key/value system to hold orchestration/secrets.
  - Replicates logs amongst Managers via mutual TLS in "control plane".
+
+ We can see the node details:
+
+```
+docker node ls
+
+# output
+ID                            HOSTNAME                STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+6pypmtllxqf0o156z3shlzrr9 *   linuxkit-025000000001   Ready               Active              Leader              18.03.1-ce
+```
+
+**Creating a Service** for **Alpine image** and ping to Google DNS server:
+
+```
+docker service create alpine ping 8.8.8.8
+```
+
+It will return the ID of the **created service** with 1 Replica. See:
+
+```
+docker service ls
+```
+
+and to **see containers inside service**
+
+```
+docker service ps <SERVICE_ID>
+```
+
+Now we can **update number of replicas** for the service:
+
+```
+docker service update <SERVICE_ID> --replicas 3
+docker service ps <SERVICE_ID>
+```
+
+And if you remove one of the 3 containers replicas, it will recreate the replica again.
+
+```
+docker container ls
+docker container rm -f <CONTAINER_REPLICA_ID>
+docker service ls
+docker service ps jpeitdtnedha
+```
