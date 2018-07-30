@@ -762,7 +762,35 @@ Swarm is a **Built-in Container Orchestration**. See some questions Swarm can an
 - Manager is a **Worker with permission to controle the Swarm**.
 - They send orders to the **Workers**.
 - They contain an internal Database to store configuration called **RAFT**.
-- They store in this database the **Certificate of Authority**
+- They store in this database the **Certificate of Authority**.
+- Store **configuration like replica numbers, rules to scale**, etc.
 
 ### Swarm Workers
 
+- They **receive orders from Managers** like start/restart/create/delete containers.
+
+
+## Activating Swarm
+
+See if Swarm is active:
+
+```
+docker info | grep Swarm
+```
+
+To initialize swarm:
+
+```
+docker swarm init
+```
+
+It just did:
+
+- PKI and security automation.
+ - Root Signing Certificate created for our Swarm.
+ - Certificate is issued for first Manager node.
+ - Join tokens are created.
+- RAFT database created to store root CA, configs and secrets.
+ - Encrypted by default on disk (1.13+)
+ - No need for another key/value system to hold orchestration/secrets.
+ - Replicates logs amongst Managers via mutual TLS in "control plane".
