@@ -753,6 +753,7 @@ Swarm is a **Built-in Container Orchestration**. See some questions Swarm can an
 - How can we ensure **only trusted servers** run our containers?
 - How can we **store secrets, keys, passwords** and get them to the right container?
 
+Good content to read about **Swarm Services** [https://docs.docker.com/engine/swarm/services/]
 
 ### Swarm Managers
 
@@ -842,3 +843,74 @@ And finaly to kill the service:
 docker service rm epic_rosalind
 ```
 __Note__: It will kill all containers for this service replicas.
+
+
+## Creating a Docker Swarm Cluster
+
+In this case I opted to use **docker-machine** do create the nodes, but you can use
+Amazon, GoogleCloud or any other technology to create them.
+
+The `docker-machine` will create **very lightweight linux virtual machine**.
+
+```
+docker-machine create node1
+docker-machine create node2
+docker-machine create node3
+```
+
+... and to access the **docker-machines** we can type:
+
+```
+docker-machine ssh node1
+```
+
+... or to get **docker-machine details** (needed to build the swarm, like IP, etc):
+
+```
+docker-machine env node1
+```
+
+In this example, we will use **docker-machine ssh** to get inside machines and 
+configure the **Swarm Cluster**.
+
+So **ssh** for the first node:
+
+```
+docker-machine ssh node1
+```
+
+... and inside the `node1`, **init the swarm**.
+
+```
+docker swarm init
+```
+
+... the command above will ask you to use the `--advertise-addr` to provide an IP, 
+so chose one and run again. My local was:
+
+```
+docker swarm init --advertise-addr 192.168.99.100
+```
+
+... so, the command above will create a **Manager** and show you a 
+**join command** to be executed inside the `node2`.
+
+My output, for instance was:
+
+```
+Swarm initialized: current node (mi8mnfbdg8ov0pp901sxnllz1) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-44fx0w9arzepmjim9apgw2i1gha9a23mse8fg5qou1ymtpni05-9mexiv7xp2dtb6dsgryufezeh 192.168.99.100:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+```
+
+So now, **ssh** to the `node2` and executed the provided command:
+
+```
+docker swarm join --token SWMTKN-1-44fx0w9arzepmjim9apgw2i1gha9a23mse8fg5qou1ymtpni05-9mexiv7xp2dtb6dsgryufezeh 192.168.99.100:2377
+```
+
+**Well done!**. Now node 2 joined to the Swarm as a **Worker**.
