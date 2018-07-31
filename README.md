@@ -184,9 +184,6 @@ Obs: Note that we use `tail -f /dev/null` to keep alpine container `alive` after
 apk update
 apk add bash
 ```
-
-docker container exec -it alpine bash
-
 ... now you can run bash:
 
 ```
@@ -305,7 +302,7 @@ docker container exec -it apache_server ping nginx_server
 
 #### DNS Round Robin
 
-We can 2 or more containers responding to the same DNS. It is a technique used 
+We can have 2 or more containers responding to the same DNS. It is a technique used 
 by many companies to balance their farm of servers.
 
 - Since Docker Engine 1.11 it is possible to have containers under a network 
@@ -370,7 +367,7 @@ And to see details about image:
 docker image inspect nginx:latest
 ```
 
-It will shouw you:
+It will show you:
 
 - Exposed ports
 - Env variables 
