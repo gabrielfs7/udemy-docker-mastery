@@ -914,3 +914,123 @@ docker swarm join --token SWMTKN-1-44fx0w9arzepmjim9apgw2i1gha9a23mse8fg5qou1ymt
 ```
 
 **Well done!**. Now node 2 joined to the Swarm as a **Worker**.
+
+...Now, if you check the nodes after **ssh** inside `node1`:
+
+```
+docker@node1:~$ docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+mi8mnfbdg8ov0pp901sxnllz1 *   node1               Ready               Active              Leader              18.06.0-ce
+fzvvi37tctddflavb2yfw6dfb     node2               Ready               Active                                  18.06.0-ce
+```
+
+You will see that `node` is the **Leader** (The Manager).
+
+So, if we want to transform `node2` into a **Manager**, inside `node1` we type:
+
+```
+docker node update --role manager node2
+```
+
+And then we see that manager status was updated:
+
+```
+docker@node1:~$ docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+mi8mnfbdg8ov0pp901sxnllz1 *   node1               Ready               Active              Leader              18.06.0-ce
+fzvvi37tctddflavb2yfw6dfb     node2               Ready               Active              Reachable           18.06.0-ce
+```
+
+Note that the `*` in the **ID** means the node we are **talking to**.
+
+... But, what about the `node3`? Let's add `node3` as **Manager by default**.
+Fot this, inside `node1` type:
+
+```
+docker swarm join-token manager
+```
+
+It will generate a token, which can be used to add any node as manager. My 
+output was:
+
+```
+To add a manager to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-44fx0w9arzepmjim9apgw2i1gha9a23mse8fg5qou1ymtpni05-d43llv24kk9vmht3khfodgct4 192.168.99.100:2377
+```
+
+Did you get it? So let's do it! Go **ssh** to the `node3` and execute:
+
+```
+docker swarm join --token SWMTKN-1-44fx0w9arzepmjim9apgw2i1gha9a23mse8fg5qou1ymtpni05-d43llv24kk9vmht3khfodgct4 192.168.99.100:2377
+```
+
+See the result inside `node1`:
+
+```
+docker@node1:~$ docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+mi8mnfbdg8ov0pp901sxnllz1 *   node1               Ready               Active              Leader              18.06.0-ce
+fzvvi37tctddflavb2yfw6dfb     node2               Ready               Active              Reachable           18.06.0-ce
+pae7vqclkh7zo0i8xvad333co     node3               Ready               Active              Reachable           18.06.0-ce
+```
+
+So let's start **Creating Containers inside the Swarm Cluster**! Inside `node1`:
+
+```
+docker@node1:~$ docker service create --replicas 3 alpine ping 8.8.8.8
+docker@node1:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+xcubybeasggi        nifty_albattani     replicated          3/3                 alpine:latest
+```
+
+**So What happened?**. Basically every node joined to the Swarm has now an 
+`alpine:latest` container running. You can check by accessing each node, like this:
+
+
+
+
+**node1:**
+
+```
+docker@node1:~$ docker service ps nifty_albattani
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+p2t1pc5izauz        nifty_albattani.1   alpine:latest       node1               Running             Running 8 minutes ago
+7y44ewmjtsmh        nifty_albattani.2   alpine:latest       node2               Running             Running 8 minutes ago
+qjxx02xqj64s        nifty_albattani.3   alpine:latest       node3               Running             Running 8 minutes ago
+
+docker@node1:~$ docker node ps
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+p2t1pc5izauz        nifty_albattani.1   alpine:latest       node1               Running             Running 5 minutes ago
+
+docker@node1:~$ docker container ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+3f31e6d25b0a        alpine:latest       "ping 8.8.8.8"      5 minutes ago       Up 5 minutes                            nifty_albattani.1.p2t1pc5izauzp62c8m5q2d2h6
+docker@node1:~$
+```
+
+**node2:**
+
+```
+docker@node2:~$ docker node ps
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+7y44ewmjtsmh        nifty_albattani.2   alpine:latest       node2               Running             Running 6 minutes ago
+
+docker@node2:~$ docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+614bcb71c10d        alpine:latest       "ping 8.8.8.8"      6 minutes ago       Up 6 minutes                            nifty_albattani.2.7y44ewmjtsmh80spe1eappdtq
+```
+
+**node3**
+
+```
+docker@node3:~$ docker node ps
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+qjxx02xqj64s        nifty_albattani.3   alpine:latest       node3               Running             Running 7 minutes ago
+
+docker@node3:~$ docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+771dbe099ec2        alpine:latest       "ping 8.8.8.8"      7 minutes ago       Up 7 minutes                            nifty_albattani.3.qjxx02xqj64sqw780wzo82axf
+```
+
+Now we can update all the nodes from `node1` without and it will propagate through the Swarm!
