@@ -886,7 +886,7 @@ docker swarm init
 ```
 
 ... the command above will ask you to use the `--advertise-addr` to provide an IP, 
-so chose one and run again. My local was:
+so choose one and run again. My local was:
 
 ```
 docker swarm init --advertise-addr 192.168.99.100
@@ -913,9 +913,9 @@ So now, **ssh** to the `node2` and executed the provided command:
 docker swarm join --token SWMTKN-1-44fx0w9arzepmjim9apgw2i1gha9a23mse8fg5qou1ymtpni05-9mexiv7xp2dtb6dsgryufezeh 192.168.99.100:2377
 ```
 
-**Well done!**. Now node 2 joined to the Swarm as a **Worker**.
+**Well done!** Now `node2` joined to the Swarm as a **Worker**.
 
-...Now, if you check the nodes after **ssh** inside `node1`:
+...If you check the nodes after **ssh** inside `node1`:
 
 ```
 docker@node1:~$ docker node ls
@@ -924,7 +924,7 @@ mi8mnfbdg8ov0pp901sxnllz1 *   node1               Ready               Active    
 fzvvi37tctddflavb2yfw6dfb     node2               Ready               Active                                  18.06.0-ce
 ```
 
-You will see that `node` is the **Leader** (The Manager).
+You will see that `node1` is the **Leader** (The Manager).
 
 So, if we want to transform `node2` into a **Manager**, inside `node1` we type:
 
@@ -941,16 +941,16 @@ mi8mnfbdg8ov0pp901sxnllz1 *   node1               Ready               Active    
 fzvvi37tctddflavb2yfw6dfb     node2               Ready               Active              Reachable           18.06.0-ce
 ```
 
-Note that the `*` in the **ID** means the node we are **talking to**.
+Note that the `*` in the **ID** means that the node we are **talking to**.
 
 ... But, what about the `node3`? Let's add `node3` as **Manager by default**.
-Fot this, inside `node1` type:
+For this, inside `node1` type:
 
 ```
 docker swarm join-token manager
 ```
 
-It will generate a token, which can be used to add any node as manager. My 
+It will generate a token which can be used to add any node as manager. My 
 output was:
 
 ```
@@ -1033,4 +1033,4 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 771dbe099ec2        alpine:latest       "ping 8.8.8.8"      7 minutes ago       Up 7 minutes                            nifty_albattani.3.qjxx02xqj64sqw780wzo82axf
 ```
 
-Now we can update all the nodes from `node1` without and it will propagate through the Swarm!
+Now we can update all the nodes from `node1` and it will propagate through the Swarm Cluster!
