@@ -12,37 +12,6 @@
   new `--mount` format to do this: `--mount type=volume,source=db-data,target=/var/lib/postgresql/data`
 
 
-frontend and backend)Create the **Networks**
-```
-docker network create --driver overlay frontend
-docker network create --driver overlay backend
-```
-
-vote) Create **vote** service for **frontend** network:
-```
-docker service create --replicas 2 --publish 80:80 --network frontend --name vote dockersamples/examplevotingapp_vote:before
-```
-
-redis) Create **Redis** service for **frontend** network:
-```
-docker service create --replicas 1 --network frontend --name redis redis:3.2
-```
-
-worker) Create **worker** service to process **redis votes** and stores in **postgres** enabled for **frontend** and **backend** networks
-```
-docker service create --replicas 1 --network frontend --network backend --name worker dockersamples/examplevotingapp_worker
-```
-
-db) Create **db** service to store votes, enabled for **backend** network
-```
-docker service create --replicas 1 --network backend --mount type=volume,source=db-data,target=/var/lib/postgresql/data --name db postgres:9.4
-```
-
-result) Create **result** service running on port **5001** on **backend** network
-```
-docker service create --replicas 1 --network backend --name result --publish 5001:80 dockersamples/examplevotingapp_result:before
-```
-
 ### Services (names below should be service names)
 - vote
     - dockersamples/examplevotingapp_vote:before
@@ -78,3 +47,36 @@ docker service create --replicas 1 --network backend --name result --publish 500
     - so run on a high port of your choosing (I choose 5001), container listens on 80
     - on backend network
     - 1 replica
+
+## Solution
+
+frontend and backend)Create the **Networks**
+```
+docker network create --driver overlay frontend
+docker network create --driver overlay backend
+```
+
+vote) Create **vote** service for **frontend** network:
+```
+docker service create --replicas 2 --publish 80:80 --network frontend --name vote dockersamples/examplevotingapp_vote:before
+```
+
+redis) Create **Redis** service for **frontend** network:
+```
+docker service create --replicas 1 --network frontend --name redis redis:3.2
+```
+
+worker) Create **worker** service to process **redis votes** and stores in **postgres** enabled for **frontend** and **backend** networks
+```
+docker service create --replicas 1 --network frontend --network backend --name worker dockersamples/examplevotingapp_worker
+```
+
+db) Create **db** service to store votes, enabled for **backend** network
+```
+docker service create --replicas 1 --network backend --mount type=volume,source=db-data,target=/var/lib/postgresql/data --name db postgres:9.4
+```
+
+result) Create **result** service running on port **5001** on **backend** network
+```
+docker service create --replicas 1 --network backend --name result --publish 5001:80 dockersamples/examplevotingapp_result:before
+```
