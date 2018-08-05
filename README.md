@@ -1136,6 +1136,6 @@ Attention:
 
 ## Deploing multi-tier "Voting App" with Swarm + Volumes + Overlay Network + Routing Mesh:
 
-The application is inside [/swarm-app-1] directory.
+The application is inside ![Voting App](/swarm-app-1) directory.
 
 ![Voting App](/swarm-app-1/architecture.png "Voting App")
