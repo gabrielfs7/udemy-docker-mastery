@@ -1139,3 +1139,43 @@ Attention:
 The application is inside ![Voting App](/swarm-app-1) directory.
 
 ![Voting App](/swarm-app-1/architecture.png "Voting App")
+
+We will need:
+
+- 1 volume
+- 2 networks
+- 5 services
+- Everything is using **Docker Hub** images. **No building should be used** inside the Swarm.
+
+To do that, inside **node1** (the Manager):
+
+Create the **Networks**
+```
+docker network create --driver overlay frontend
+docker network create --driver overlay backend
+```
+
+Create **vote** service for **frontend** network:
+```
+docker service create --replicas 2 --publish 80:80 --network frontend --name vote dockersamples/examplevotingapp_vote:before
+```
+
+Create **Redis** service for **frontend** network:
+```
+docker service create --replicas 1 --network frontend --name redis redis:3.2
+```
+
+Create **worker** service to process **redis votes** and stores in **postgres** enabled for **frontend** and **backend** networks
+```
+docker service create --replicas 1 --network frontend --network backend --name worker dockersamples/examplevotingapp_worker
+```
+
+Create **db** service to store votes, enabled for **backend** network and volume **db-data**
+```
+docker service create --replicas 1 --network backend --mount type=volume,source=db-data,target=/var/lib/postgresql/data --name db postgres:9.4
+```
+
+Create **result** service running on port **5001** on **backend** network
+```
+docker service create --replicas 1 --network backend --name result --publish 5001:80 dockersamples/examplevotingapp_result:before
+``` 
