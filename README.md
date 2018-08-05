@@ -907,6 +907,8 @@ To add a worker to this swarm, run the following command:
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
 
+Good article to handle with Swarm port [https://www.bretfisher.com/docker-swarm-firewall-ports/].
+
 So now, **ssh** to the `node2` and executed the provided command:
 
 ```
@@ -1034,3 +1036,33 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ```
 
 Now we can update all the nodes from `node1` and it will propagate through the Swarm Cluster!
+
+--
+
+## Create a multi-layer netwrok for Swarm hosts.
+
+You need to access **node1** we created above and create a **network** inside of it.
+
+```
+docker network create --driver overlay my_drupal_network
+```
+
+Let's now create our **Postgres Service** inside **node1** also.
+
+```
+docker service create --name my_drupal_postgres --network my_drupal_network -e POSTGRES_PASSWORD=postgres postgres:9.6.2
+``
+
+Then we can verify the results by running all these commands:
+
+```
+docker service ls
+docker service ps my_drupal_postgres
+docker container logs my_drupal_postgres
+```
+
+Now we can create the **Drupal Service**
+
+```
+docker create service --name my_drupal --network my_drupal_network --publish 80:80 drupal:8.5.5-apache
+```
