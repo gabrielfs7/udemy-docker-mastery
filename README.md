@@ -1131,5 +1131,5 @@ curl localhost:9200
 
 Attention:
 
-- This is a Load Balancer at OSI Layer 3 (TCP), not Layer 4 (DNS), so it takes decision based on **IP only**, **Not considering port**.
+- This is a Load Balancer at OSI (Open Systems Interconnections) Layer 3 (TCP), not Layer 4 (DNS), so it takes decision based on **IP only**, **Not considering port**.
 - It does not replace a need for a real DNS loadbalancer like NGinx or HAProxy.
