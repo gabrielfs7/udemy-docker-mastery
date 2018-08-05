@@ -1051,7 +1051,7 @@ Let's now create our **Postgres Service** inside **node1** also.
 
 ```
 docker service create --name my_drupal_postgres --network my_drupal_network -e POSTGRES_PASSWORD=postgres postgres:9.6.2
-``
+```
 
 Then we can verify the results by running all these commands:
 
@@ -1064,7 +1064,7 @@ docker container logs my_drupal_postgres
 Now we can create the **Drupal Service**
 
 ```
-docker create service --name my_drupal --network my_drupal_network --publish 80:80 drupal:8.5.5-apache
+docker service create --name my_drupal --network my_drupal_network --publish 80:80 drupal:8.5.5-apache
 ```
 
 So if you can verify now that the **my_drupal** service will be running in **node2**
@@ -1073,3 +1073,15 @@ So if you can verify now that the **my_drupal** service will be running in **nod
 docker service ls
 docker service ps my_drupal
 ```
+
+... Now you can get nodes IP address, by running:
+
+```
+docker-machine env node1
+docker-machine env node2
+docker-machine env node3
+```
+
+... and access these IPs on **Port 80** (which we have choosen for my_drupal).
+... The drupal installation screen will appear and you can setup postgres host as **my_drupal_postgres**
+... then finish the installation and you will see all 3 IPs (node1, node2 and node3) will be responding fro Drupal.
