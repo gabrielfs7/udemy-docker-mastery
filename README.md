@@ -1084,4 +1084,52 @@ docker-machine env node3
 
 ... and access these IPs on **Port 80** (which we have choosen for my_drupal).
 ... The drupal installation screen will appear and you can setup postgres host as **my_drupal_postgres**
-... then finish the installation and you will see all 3 IPs (node1, node2 and node3) will be responding fro Drupal.
+... then finish the installation and you will see that all 3 IPs (node1, node2 and node3) are responding from Drupal.
+
+But why did the all nodes respond for **port 80 requests** if **my_drupal** contaier was inside **node2**?
+
+   It was because of **Routing Mesh**!
+
+## Roting Mesh
+
+It is a **Routes ingress (or incoming) network to distribute packages** for a service to a **proper Task**.
+
+- It spans **all the nodes** in Swarm.
+- It **Load Balances** all the nodes Swarm Services across their tasks.
+- It **uses IPVS** (Virtual IP Server) from Linux Kernel.
+
+Let's test it with **3 ElasticSearch replicas** in our swarm. So inside **node1** (the Manager), type:
+
+```
+docker service create --name es_search --replicas 3 --publish 9200:9200 elasticsearch:2
+```
+
+It will create 3 ElasticSearhc container, one for each node. You can check:
+
+```
+docker service ps es_search
+```
+
+My output was:
+
+```
+docker@node1:~$ docker service ps es_search
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+eblyibinvod2        es_search.1         elasticsearch:2     node3               Running             Running 56 seconds ago
+ksydkfspl0gh        es_search.2         elasticsearch:2     node2               Running             Running 14 seconds ago
+ppn7cmhq53tj        es_search.3         elasticsearch:2     node1               Running             Running 50 seconds ago
+```
+
+Now you can check all ElasticSearch tasks (or containers) are responding. Execute the command above 
+and you will see that the "name" of ElasticSerch application will change.
+
+```
+curl localhost:9200
+```
+
+... and this is the VIP acting as a **load balancer** and distributing the request across the the tasks (or containers).
+
+Attention:
+
+- This is a Load Balancer at OSI Layer 3 (TCP), not Layer 4 (DNS), so it takes decision based on **IP only**, **Not considering port**.
+- It does not replace a need for a real DNS loadbalancer like NGinx or HAProxy.
