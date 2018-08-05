@@ -1037,7 +1037,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 Now we can update all the nodes from `node1` and it will propagate through the Swarm Cluster!
 
---
+
 
 ## Create a multi-layer netwrok for Swarm hosts.
 
@@ -1065,4 +1065,11 @@ Now we can create the **Drupal Service**
 
 ```
 docker create service --name my_drupal --network my_drupal_network --publish 80:80 drupal:8.5.5-apache
+```
+
+So if you can verify now that the **my_drupal** service will be running in **node2**
+
+```
+docker service ls
+docker service ps my_drupal
 ```
