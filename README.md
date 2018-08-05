@@ -1090,7 +1090,7 @@ But why did the all nodes respond for **port 80 requests** if **my_drupal** cont
 
    It was because of **Routing Mesh**!
 
-## Roting Mesh
+## Routing Mesh
 
 It is a **Routes ingress (or incoming) network to distribute packages** for a service to a **proper Task**.
 
@@ -1133,3 +1133,9 @@ Attention:
 
 - This is a Load Balancer at OSI (Open Systems Interconnections) Layer 3 (TCP), not Layer 4 (DNS), so it takes decision based on **IP only**, **Not considering port**.
 - It does not replace a need for a real DNS loadbalancer like NGinx or HAProxy.
+
+## Deploing multi-tier "Voting App" with Swarm + Volumes + Overlay Network + Routing Mesh:
+
+The application is inside [/swarm-app-1] directory.
+
+![Voting App](/swarm-app-1/architecture.png "Voting App")
