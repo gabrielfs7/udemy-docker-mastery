@@ -1215,8 +1215,7 @@ docker stack services voteapp
 ```
 
 You can access the **visualizer** on your browser to see **really cool view**
-of containers, nodes, hardware, etc of your stack by (where 192.168.99.102 is my node1 ip):
-
-```
-http://192.168.99.102:8080/
-```
+of containers, nodes, hardware, etc of your stack 
+by (where 192.168.99.102 is my node1 ip) on `http://192.168.99.102:8080/`, 
+to vote:`http://192.168.99.102:5000/` and to see 
+results `http://192.168.99.102:5001/`.
