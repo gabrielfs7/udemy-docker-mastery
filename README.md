@@ -1219,3 +1219,24 @@ of containers, nodes, hardware, etc of your stack
 by (where 192.168.99.102 is my node1 ip) on `http://192.168.99.102:8080/`, 
 to vote:`http://192.168.99.102:5000/` and to see 
 results `http://192.168.99.102:5001/`.
+
+
+### SECURITY: Storing "secrets" on Swarm
+
+Swarm supports **store "screts"** like generic strings or binary 
+content **up to 500kb**.
+
+**What are the "secrets"?**
+
+- TLS certificates
+- username and passwords
+- SSH keys and keys
+- Any other data we do not want to be exposed
+
+**Features:**
+
+- Swarm RAFT db is **encrypted on disk**.
+- Only stores on the disk of **Manager nodes**.
+- Communication between **managers and workers** has mutual auth using PKI and TLS.
+- They look like files in container, but they are actually **in-memory**. Example:
+    `/run/secrets/<secret_name>` or `/run/secrets/<secret_alias>`.
