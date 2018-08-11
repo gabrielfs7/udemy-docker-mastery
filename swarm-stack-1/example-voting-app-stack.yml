@@ -1,6 +1,16 @@
+#
+# It is the same architecture used on "/swarm-app-1"
+#
+
+#
+# It must have version >= 3
+#
 version: "3"
 services:
 
+  #
+  # Definition of our Redis service
+  #
   redis:
     image: redis:alpine
     ports:
@@ -9,11 +19,19 @@ services:
       - frontend
     deploy:
       replicas: 1
+
+      #
+      # Here we specify what happens when we run "stack update".
+      #
       update_config:
         parallelism: 2
         delay: 10s
       restart_policy:
         condition: on-failure
+
+  #
+  # Important: For the "db", we specify to deploy "only on" "Manager nodes".
+  #
   db:
     image: postgres:9.4
     volumes:
@@ -33,6 +51,9 @@ services:
       - redis
     deploy:
       replicas: 2
+      #
+      # Here we specify what happens when we run "stack update".
+      #
       update_config:
         parallelism: 2
       restart_policy:
@@ -47,9 +68,15 @@ services:
       - db
     deploy:
       replicas: 1
+      #
+      # Here we specify what happens when we run "stack update".
+      #
       update_config:
         parallelism: 2
         delay: 10s
+      #
+      # We define when to "restart" the container. In this case, whem it fails.
+      #
       restart_policy:
         condition: on-failure
 

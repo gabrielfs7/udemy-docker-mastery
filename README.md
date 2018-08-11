@@ -1179,3 +1179,44 @@ Create **result** service running on port **5001** on **backend** network
 ```
 docker service create --replicas 1 --network backend --name result --publish 5001:80 dockersamples/examplevotingapp_result:before
 ``` 
+
+# Docker Swarm - Stacks of Services
+
+Use docker compose networks and volumes for Swarm deploy. Stack is like the 
+**docker-compose for Swarm**. So we have a `.yml` file containing the 
+instructions to build our **Stack**.
+
+### Lets try the example:
+
+The example in **(swarm-stack-1)** show the `.yml` file which contains all the 
+instructions to create the **stack** (whith networks, containers, replicas, etc).
+
+It is the same architecture used on **/swarm-app-1**. Please copy 
+`example-voting-app-stack.yml` inside **node1 /home/docker** and execute:
+
+```
+cd swarm-stack-1
+docker stack deploy --compose-file example-voting-app-stack.yml voteapp
+```
+
+It will not create all the services fast. It will be **assync**, so if you run 
+`docker service ls` you will se replicas as **0/N** for most of the services.
+
+To see all **images, nodes and tasks in the Stack** we type:
+
+```
+docker stack ps voteapp
+```
+
+... or to see also replicas
+
+```
+docker stack services voteapp
+```
+
+You can access the **visualizer** on your browser to see **really cool view**
+of containers, nodes, hardware, etc of your stack by (where 192.168.99.102 is my node1 ip):
+
+```
+http://192.168.99.102:8080/
+```
