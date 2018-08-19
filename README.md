@@ -1289,3 +1289,19 @@ We can also **remove or add secrets**, but it will **recreate the containers**.
 docker service update --secret-rm psql_user
 docker service update --secret-add psql_user myuser
 ```
+
+##### Using Secrets in Swarm Stack
+
+The example is in `secrets-sample-2`. So **inside "node1", go to this directory**:
+
+Create 3 replicas of ElasticSearch:
+
+```
+docker service create --name search --replicas 3 -p 9200:9200 elasticsearch:2
+```
+
+Deploy the Stack using the compose file:
+
+```
+docker stack deploy -c docker-compose.yml mydb
+```

@@ -1,8 +1,15 @@
+#
+# TO use the "secrets" version we need to have version >= 3.1
+#
 version: "3.1"
 
 services:
   psql:
     image: postgres
+
+    #
+    # The "secret names" must be declared here also.
+    #
     secrets:
       - psql_user
       - psql_password
@@ -10,6 +17,10 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/psql_password
       POSTGRES_USER_FILE: /run/secrets/psql_user
 
+#
+# This is another way to create secrets using the docker-compose. 
+# We are reading the files containing the "secret" information.
+#
 secrets:
   psql_user:
     file: ./psql_user.txt
