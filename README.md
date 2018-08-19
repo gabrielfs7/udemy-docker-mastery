@@ -1240,3 +1240,52 @@ content **up to 500kb**.
 - Communication between **managers and workers** has mutual auth using PKI and TLS.
 - They look like files in container, but they are actually **in-memory**. Example:
     `/run/secrets/<secret_name>` or `/run/secrets/<secret_alias>`.
+
+
+##### Using Secrets in Swarm Services
+
+The example is in `secrets-sample-1`, so **in "node1" go to that folder** and:
+
+```
+docker secret create psql_user psql_user.txt
+```
+
+And also we can store a password, like:
+
+```
+echo "mypass" | docker secret create psql_pass -
+```
+
+So now we can list ans inspect the secrets by:
+
+```
+docker secret ls
+docker secret inspect psql_user
+docker secret inspect psql_pass
+```
+
+But the **only way to get access to those secrets** values is by assign 
+**authorized services or containers** to it. Example:
+
+Create a service providing access to secret as **environment variables**:
+
+```
+docker service create --name psql --secret psql_pass --secret psql_user -e POSTGRES_PASSWORD_FILE=/run/secrets/psql_pass -e POSTGRES_USER_FILE=/run/secrets/psql_user postgres
+```
+
+Now, get the **node and container** which this service is running, 
+so there we will **find the secret files**. We can do it by executing these commands:
+
+```
+docker service ps psql
+docker container exec -it <<CONTAINER_NAME>> bash
+cat /run/secrets/psql_user
+cat /run/secrets/psql_pass
+```
+
+We can also **remove or add secrets**, but it will **recreate the containers**.
+
+```
+docker service update --secret-rm psql_user
+docker service update --secret-add psql_user myuser
+```
