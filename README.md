@@ -1305,3 +1305,6 @@ Deploy the Stack using the compose file:
 ```
 docker stack deploy -c docker-compose.yml mydb
 ```
+
+To see how to use **external secret to stack deploy**, 
+check **secrets-assignment-1**.
