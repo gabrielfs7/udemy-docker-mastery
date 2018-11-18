@@ -1313,6 +1313,8 @@ check **secrets-assignment-1**.
 
 ## Using Secrets With Local Docker Compose
 
+You can check the sample [here](secrets-sample-2). Execute the commands bellow:
+
 ```
 docker node ls
 ```
@@ -1321,19 +1323,21 @@ docker node ls
 docker-compose up -d
 ```
 
+For the command bellow mount the volumes in 'secrets.psql_user' inside 'docker-compose.yml' file.
+
 ```
 docker-compose exec psql cat /run/secrets/psql_user
 ```
 
-```
-docker-compose 11
-```
+Check the `secrets` mapping:
 
 ```
 pcat docker-compose.yml
 ```
 
 ## Full App Lifecycle: Dev, Build and Deploy With a Single Compose Design
+
+Access sample [here](swarm-stack-3) and execute commands bellow:
 
 ```
 docker-compose up -d
