@@ -1381,6 +1381,8 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml config > output.
 
 ## Service Updates: Changing Things In Flight
 
+Create a service on the stack with Nginx image.
+
 ```
 docker service create -p 8088:80 --name web nginx:1.13.7
 ```
@@ -1389,17 +1391,25 @@ docker service create -p 8088:80 --name web nginx:1.13.7
 docker service ls
 ```
 
+Scaling swarm stack to 5 instances.
+
 ```
 docker service scale web=5
 ```
+
+Change in Flight service image to an older version of nginx:
 
 ```
 docker service update --image nginx:1.13.6 web
 ```
 
+Change the publish port in Flight:
+
 ```
 docker service update --publish-rm 8088 --publish-add 9090:80
 ```
+
+To update all the `web` containers in the nodes. 
 
 ```
 docker service update --force web
