@@ -1355,17 +1355,25 @@ docker-compose down
 docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 ```
 
+Now the volume was override by the `docker-compose.test.yml` file. 
+
 ```
 docker inspect TAB COMPLETION
 ```
+
+We can use the `config` command to merge `docker-compose` files.
 
 ```
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml config --help
 ```
 
+This will output merged configuration:
+
 ```
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml config
 ```
+
+...and you can put this configuration in a file:
 
 ```
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml config > output.yml
