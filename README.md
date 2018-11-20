@@ -403,6 +403,14 @@ Obs: Probably you will have to login on DockerHub before push the image, so:
 docker login
 ```
 
+#### Automated Build on Docler Hub
+
+It is possible to login to https://hub.docker.com and relate you github or bitbucket accounts
+to it, so you can automanted images to be build and available to https://hub.docker.com
+when you commit to master for example.
+
+It is possible to customize the build options. It is awsome!!! 
+
 ## Dockerfile
 
 Create a file called **Dockerfile** and put it inside:
@@ -1397,19 +1405,21 @@ Scaling swarm stack to 5 instances.
 docker service scale web=5
 ```
 
-Change in Flight service image to an older version of nginx:
+Change in Flight service image to an older version of nginx.
+It will not replace all replicas at once, it will change one by one smoothly.
 
 ```
 docker service update --image nginx:1.13.6 web
 ```
 
-Change the publish port in Flight:
+Change the publish port in Flight. 
+It will exchange the previously exposed port 80 from 8088 to 9090.
 
 ```
-docker service update --publish-rm 8088 --publish-add 9090:80
+docker service update --publish-rm 8088 --publish-add 9090:80 web
 ```
 
-To update all the `web` containers in the nodes. 
+Force update of all the `web` containers in the all the nodes. 
 
 ```
 docker service update --force web
@@ -1417,30 +1427,41 @@ docker service update --force web
 
 ## Health checks in Docker files
 
+Create a container `p1` using postgres image.
+
 ```
 docker container run --name p1 -d postgres
 ```
 
 ```
-docker container ls
+docker container ls --filter name=p1
 ```
+
+Create a `cmd command` to report status check of the container.
+In this case we keep checking postgres connection status.
 
 ```
 docker container run --name p2 -d --health-cmd="pg_isready -U postgres || exit 1" postgres
 ```
 
 ```
-docker container ls
+docker container ls --filter name=p2
 ```
 
+Here it is possible to check current container status and health check logs:
+
 ```
-docker container inspect p2
+docker container inspect p2 --format '{{ .State.Health.Status }}'
+docker container inspect p2 --format '{{json .State.Health.Log }}'
 ```
 
 ```
 docker service create --name p1 postgres
 ```
 
+It is also possible to add health check for all replicas of a swarm.
+
 ```
 docker service create --name p2 --health-cmd="pg_isready -U postgres || exit 1" postgres
 ```
+
