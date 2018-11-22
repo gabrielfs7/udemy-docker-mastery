@@ -1475,15 +1475,20 @@ To use local registry with self-signed certificate, access [registry-sample-1](r
 
 We can create the registry server like this:
 
-Generate certificates: 
-
+Generate certificates ([here](https://training.play-with-docker.com/linux-registry-part2/) you can find full example): 
 
 ```
 cd registry-sample-1
 mkdir -p certs
 openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt
+```
+
+Run registry securely with the certificate:
+
+```
 docker run --rm -e COMMON_NAME=127.0.0.1 -e KEY_NAME=registry -v $(pwd)/certs:/certs centurylink/openssl
 ```
+
 And create the registry
 
 ```
@@ -1552,4 +1557,47 @@ Now you can check inside the volume that the image is there inside the folder `d
 
 ```
 tree registry-data
+```
+
+You can create **basic authentication over https** (I used username "moby" and password "gordon" in this example):
+
+```
+mkdir auth
+docker run --entrypoint htpasswd registry:latest -Bbn moby gordon > auth/htpasswd
+```
+
+Check that the username and password were save here: 
+
+```
+cat auth/htpasswd
+```
+
+Now you can run the registry using `htpasswd` authentication:
+
+```
+docker kill registry
+docker rm registry
+docker run -d -p 5000:5000 --name registry \
+  --restart unless-stopped \
+  -v $(pwd)/registry-data:/var/lib/registry \
+  -v $(pwd)/certs:/certs \
+  -v $(pwd)/auth:/auth \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  -e REGISTRY_AUTH=htpasswd \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e "REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd" \
+  registry
+```
+
+Now you can login to it:
+
+```
+docker login 127.0.0.1:5000
+```
+
+and then pull the image:
+
+```
+ocker pull 127.0.0.1:5000/hello-world
 ```
