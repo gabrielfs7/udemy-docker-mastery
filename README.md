@@ -1475,8 +1475,19 @@ To use local registry with self-signed certificate, access [registry-sample-1](r
 
 We can create the registry server like this:
 
+Generate certificates: 
+
+
 ```
-docker container -d -p 5000:500 --name registry registry
+cd registry-sample-1
+mkdir -p certs
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt
+docker run --rm -e COMMON_NAME=127.0.0.1 -e KEY_NAME=registry -v $(pwd)/certs:/certs centurylink/openssl
+```
+And create the registry
+
+```
+docker container run -d -p 5000:5000 --name registry registry
 ```
 
 Lets create a tag for a image and **store it to our local registry**:
@@ -1490,7 +1501,7 @@ docker pull hello-world
 Now tag the image with your host ip (in this case `127.0.0.1`) and port (in this case `5000`):
 
 ```
-docker tag hello-word 127.0.0.1:5000/hello-world
+docker tag hello-world 127.0.0.1:5000/hello-world
 ```
 
 Now push it to your local registry:
@@ -1499,7 +1510,7 @@ Now push it to your local registry:
 docker push 127.0.0.1:5000/hello-world 
 ```
 
-Check your containers now: 
+Check your images now: 
 
 ```
 docker image ls
@@ -1527,13 +1538,13 @@ this way you can **transport/backup** it.
 To do this, we should create the registry like this:
 
 ```
-cd registry-sample-1
 docker container run -d -p 5000:5000 --name registry -v $(pwd)/registry-data:/var/lib/registry registry
 ```
 
-Now we can push the image to the the local registry volume:
+Now we can tag/push the image to the the local registry volume:
 
 ```
+docker tag hello-world 127.0.0.1:5000/hello-world
 docker push 127.0.0.1:5000/hello-world
 ```
 
