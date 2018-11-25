@@ -1599,5 +1599,90 @@ docker login 127.0.0.1:5000
 and then pull the image:
 
 ```
-ocker pull 127.0.0.1:5000/hello-world
+docker pull 127.0.0.1:5000/hello-world
 ```
+
+## Docker registry with Swarm
+
+
+This is useful, cause if you have a Swarm you cannot make the nodes download images from a single registry container.
+It needs to be a Swarm registry in order to make all Swarm nodes to pull this image.
+
+To do this, we can create a swarm of 5 managers and no workers on [https://labs.play-with-docker.com](https://labs.play-with-docker.com).
+
+- Click on the tool icon and choose `5 Managers and no workers`:
+
+Then we can create the registry for our swarm:
+
+```
+docker service create --name registry --publish 5000:5000 registry
+```
+
+Now you can check service is running:
+
+```
+docker service ps registry
+```
+
+If you access the registry catalog you will see it is empty (on play-with-docker.com you can access the 5000 link). Example:
+
+```
+http://ip172-19-0-41-bft56dgv0j3g00el2hkg-5000.direct.labs.play-with-docker.com/v2/_catalog
+```
+
+It will return empty repositories, like this:
+
+```
+{"repositories": []}
+```
+
+Now we can start `populating` our repositories by downloading and tagging our first image:
+
+```
+docker pull hello-world
+```
+
+And tag:
+
+```
+docker tag hello-world 127.0.0.1:5000/hello-world
+```
+
+and push:
+
+```
+docker push 127.0.0.1:5000/hello-world
+```
+
+Now if you check the repositories URL there must be another repository there:
+
+Lets test the propagation of a **Nginx** image on our **Swarm Registry Server**:
+
+```
+docker pull nginx
+docker tag nginx 127.0.0.1:5000/nginx
+docker push 127.0.0.1:5000/nginx
+```
+
+Now if we create a service in our Swarm specifying the image from our 
+registry, it will be **available on all 5 Swarm nodes** (cause I specify the replicas):
+  
+```
+docker service create --name nginx --publish 80:80 --replicas 5 --detach=false 127.0.0.1:5000/nginx
+```
+
+Now you can access the link `80` on each node and check nginx is 
+running **using your Swarm Registry image**. In my case:
+
+```
+http://ip172-19-0-41-bft56dgv0j3g00el2hkg-80.direct.labs.play-with-docker.com/
+```
+
+You can check the services running your `nginx` image by:
+
+```
+docker service ps nginx
+```
+
+...So the five nodes will have this! :)
+
