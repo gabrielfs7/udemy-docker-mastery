@@ -335,6 +335,42 @@ container):
 docker container run --rm --network dude centos curl -s search:9200
 ```
 
+### Maintaining / Monitoring Docker filesystem 
+
+Docker can use mauch space of your hard-drive with non used images, containers, cache, etc.
+
+You can check docker space consuming by:
+
+```
+docker system df
+```
+So if we want to clean this space we can:
+
+- Delete all non runing containers, not in use volumes and images:
+
+**DANGER!!! You will lost your volume data** :
+```
+docker system prune --all 
+```
+
+- To remove only not running containers, but kee volumes and images:
+
+```
+docker system prune 
+```
+
+- To remove unused images:
+
+```
+docker image prune
+```
+
+- To remove unused containers:
+
+```
+docker container prune
+```
+
 ## Images
 
 To see image history commands
