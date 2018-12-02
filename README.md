@@ -2,28 +2,29 @@
 
 > Build, compose, deploy, and manage Docker containers from development to DevOps based Swarm clusters
 
-This repo is for use in my Udemy Course https://www.bretfisher.com/dockermastery
-
-Feel free to create issues or PRs if you find a problem.
-
+This repo was used in my Udemy Course https://www.bretfisher.com/dockermastery, so it is just for testing and learning Docker.
 
 # Gloassary:
 
 ### Image
 
 - Is the application I want to run. I.e. image of `nginx` web server.
-- Is the application `binaries` and` dependencies` for your app and `metadata` 
-  on "how to" run it.
+- Is the application `binaries` and` dependencies` for your app and `metadata` on "how to" run it.
 - We can store our images as `registry` on Docker Hub (hub.docker.com)
 - Official: It is an **ordered collection of root fliesystem changes** and the 
   corresponding **execution parameters** to run within a `container` runtime.
-- There ir **NO kernel**, **NO kernel modules**, the host (your OS or a Docker-Machine)
+- There is **NO kernel**, **NO kernel modules**, the host (your OS or a Docker-Machine)
   provider the kernel.
 
 ### Container
 
 - Is an instance of the image running as a `process`.
 - We can have many containers of `same` image running.
+- We can publish (allow) ports to be accessed in a container.
+
+### Swarm
+
+- It is a native Docker tool for containers and services Orchestration.
 
 # How to?
 
@@ -1690,7 +1691,7 @@ and push:
 docker push 127.0.0.1:5000/hello-world
 ```
 
-Now if you check the repositories URL there must be another repository there:
+Now if you check the repositories URLs there must be another repository there:
 
 Lets test the propagation of a **Nginx** image on our **Swarm Registry Server**:
 
@@ -1714,7 +1715,7 @@ running **using your Swarm Registry image**. In my case:
 http://ip172-19-0-41-bft56dgv0j3g00el2hkg-80.direct.labs.play-with-docker.com/
 ```
 
-You can check the services running your `nginx` image by:
+You can check the services running your `nginx` image:
 
 ```
 docker service ps nginx
